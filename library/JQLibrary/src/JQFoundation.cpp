@@ -587,25 +587,34 @@ void JQFoundation::openDebugConsole()
 #if !(defined Q_OS_IOS) && !(defined Q_OS_ANDROID) && !(defined Q_OS_WINPHONE) && !(defined Q_OS_WASM)
 bool JQFoundation::singleApplication(const QString &flag)
 {
-    static QMap< QString, QSharedMemory * > shareMemSet;
+    // 类提供对共享内存段的访问
+    // 字典： <字符串，共享内存 >
+    static QMap< QString, QSharedMemory * > shareMemSet;  // 静态的全局
 
-    auto &shareMem = shareMemSet[ flag ];
-    if ( shareMem ) { return true; }
+    auto &shareMem = shareMemSet[ flag ];  // 指针
+    if ( shareMem ) {
+        qDebug() <<"存在共享内存指针， 返回内存指针";
+        return true;
+
+    }
 
     shareMem = new QSharedMemory( flag );
-
+    qDebug() << "创建共享内存" << endl;
     for ( auto count = 0; count < 2; ++count )
-    {
+    {   qDebug() << " 尝试将进程连接到共享内存段" << endl;
         if ( shareMem->attach( QSharedMemory::ReadOnly ) )
         {
+            qDebug() << "将进程从共享内存段中分离出来" <<endl;
             shareMem->detach();
         }
     }
 
     if ( shareMem->create( 1 ) )
     {
+        qDebug() << "用传递给构造函数的键创建一个字节大小的共享内存段" << endl;
         return true;
     }
+    qDebug() << "用传递给构造函数的键创建一个字节大小的共享内存段,失败， 删除指针" << endl;
 
     delete shareMem;
     shareMem = nullptr;

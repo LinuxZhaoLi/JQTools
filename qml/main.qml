@@ -29,10 +29,11 @@ ApplicationWindow {
     minimumHeight: 600
 
     Component.onCompleted: {
+        console.log("applicationWindow 加载完成")
         mainPageContains.showPage( "首页", "qrc:/Welcome/Welcome.qml" );
 
         opacityAnimation.start();
-
+        console.log("开启动画")
         bookmarkListView.refresh(
                     [
                         { bookmarkName: "首页", titleName: "首页", qrcLocation: "qrc:/Welcome/Welcome.qml", children: [ ] },
@@ -104,7 +105,7 @@ ApplicationWindow {
                         }
                     ] );
     }
-
+    // 启动动画
     NumberAnimation {
         id: opacityAnimation
         target: applicationWindow
@@ -112,6 +113,9 @@ ApplicationWindow {
         easing.type: Easing.OutCubic
         duration: 300
         to: 1
+        onStopped: {
+            console.log("动画结束")
+        }
     }
 
     Rectangle {
@@ -120,17 +124,26 @@ ApplicationWindow {
         z: 1
         width: 180
         height: 64
+        color: "red"
+        Component.onCompleted: {
+            console.log("第一个Rectangle")
+        }
     }
-
+    // 生成一个模糊和彩色的矩形，给人一种光源发光的印象。
     RectangularGlow {
         x: 180
         z: -1
         width: parent.width - 180
         height: 64
         glowRadius: 5
+        // 这个属性定义了光源边缘附近辉光颜色的增强程度。
         spread: 0.22
         color: "#30000000"
         cornerRadius: 3
+
+        Component.onCompleted: {
+            console.log("第一个RectangularGlow")
+        }
     }
 
     Rectangle {
@@ -139,7 +152,9 @@ ApplicationWindow {
         width: parent.width - 180
         height: 64
         color: "#2196F3"
-
+        Component.onCompleted: {
+            console.log("第二个Rectangle")
+        }
         MaterialLabel {
             id: currentItemTitleNameLabel
             x: 60
@@ -185,6 +200,9 @@ ApplicationWindow {
         width: 180
         height: 1
         color: "#e1e1e1"
+        Component.onCompleted: {
+            console.log("第三个Rectangle")
+        }
     }
 
     MaterialLabel {
@@ -204,12 +222,13 @@ ApplicationWindow {
         height: parent.height - 64
         color: "#ffffff"
     }
-
+    // 列表示图
     ListView {
         id: bookmarkListView
         y: 64
         width: 180
         height: parent.height - 64
+        // 这个属性决定委托是否保留在视图可见区域之外。
         cacheBuffer: 9999
 
         model: ListModel {
@@ -222,9 +241,12 @@ ApplicationWindow {
             height: 42
             clip: true
 
-            Behavior on height { NumberAnimation { easing.type: Easing.InOutQuad; duration: 400 } }
+            Behavior on height { NumberAnimation { easing.type: Easing.InOutQuad; duration: 4000 } }
 
             Component.onCompleted: {
+                console.log("bookmarkListView 列表示图加载完成后：")
+                console.log(JSON.stringify(bookmarkChildrenItem))
+                console.log(typeof(bookmarkChildrenItem))
                 for ( var index = 0; index < bookmarkChildrenItem.count; ++index )
                 {
                     var buf = bookmarkChildrenItem.get(index);
@@ -345,6 +367,7 @@ ApplicationWindow {
         }
 
         function refresh( items ) {
+
             bookmarkListModel.clear();
 
             for (var index = 0; index < items.length; index++)
@@ -355,6 +378,7 @@ ApplicationWindow {
                                                 itemQrcLocation: items[index]["qrcLocation"],
                                                 bookmarkChildrenItem: items[index]["children"]
                                             } );
+                console.log("bookmarkListView: 刷新",JSON.stringify(bookmarkListModel))
             }
         }
 
@@ -405,7 +429,9 @@ ApplicationWindow {
         z: -2
         width: parent.width - 180
         height: parent.height - 64
-
+        Component.onCompleted: {
+            console.log("mainPageContains 加载完成");
+        }
         property var pages: new Object
 
         function showPage( titleName, itemQrcLocation ) {
@@ -460,5 +486,8 @@ ApplicationWindow {
         anchors.fill: parent
         dialogCancelText: "取消"
         dialogOKText: "确定"
+        Component.onCompleted: {
+            console.log("第一个materialUI")
+        }
     }
 }

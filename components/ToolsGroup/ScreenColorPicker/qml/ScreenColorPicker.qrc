@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/ScreenColorPicker">
         <file>ScreenColorPicker.qml</file>
-        <file>取色器.png</file>
-        <file>取色笔.png</file>
+        <file>ColorPen.png</file>
     </qresource>
 </RCC>

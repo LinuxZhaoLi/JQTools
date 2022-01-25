@@ -13,6 +13,8 @@
     following information to ensure the GNU Lesser General Public License
     requirements will be met: https://www.gnu.org/licenses/lgpl.html and
     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+
+
 */
 
 #ifndef JQLIBRARY_INCLUDE_JQFOUNDATION_H_
@@ -79,7 +81,7 @@ QDebug operator<<(QDebug dbg, const QPair< QDateTime, QDateTime > &data);
 QDebug operator<<(QDebug dbg, const JQDebugEnum &debugConfig);
 
 std::ostream &operator<<(std::ostream &dbg, const JQDebugEnum &debugConfig);
-
+// 名字空间
 namespace JQFoundation
 {
 

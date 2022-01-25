@@ -54,3 +54,10 @@ CMakeLists.txt.user*
 ### macOS ###
 *.DS_Store
 
+debug/JQTools.exe
+debug/moc_predefs.h
+debug/mocinclude.opt
+JQTools_resource.rc
+mocinclude.opt
+object_script.JQTools.Debug
+object_script.JQTools.Release
